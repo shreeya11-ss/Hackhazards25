@@ -7,6 +7,7 @@ import WalletScreen from './components/WalletScreen';
 import RegisterScreen from './components/registerscreen';
 import OTPScreen from './components/otpscreen';
 import ForgotPasswordScreen from './components/ForgotPasswordScreen';
+import HistoryScreen from './components/HistoryScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -23,9 +24,10 @@ function App() {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="OTPScreen" component={OTPScreen} />
-        <Stack.Screen name="Wallet" component={WalletScreen} />
+        <Stack.Screen name="WalletScreen" component={WalletScreen} />
         <Stack.Screen name="StellPayScreen" component={StellPayScreen} />
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+        <Stack.Screen name="HistoryScreen" component={HistoryScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

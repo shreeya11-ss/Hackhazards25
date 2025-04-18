@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const WalletScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const navigation = useNavigation(); // Initialize navigation
+
+  const handleHistoryPress = () => {
+    navigation.navigate('HistoryScreen'); // Navigate to HistoryScreen
+};
 
   return (
     <View style={styles.container}>
@@ -131,7 +137,7 @@ const WalletScreen = () => {
             <Ionicons name="scan-outline" size={28} color="white" />
           </View>
         </View>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity style={styles.navItem} onPress={handleHistoryPress}>
           <Ionicons name="time-outline" size={24} color="#8E8E93" />
           <Text style={styles.navLabel}>History</Text>
         </TouchableOpacity>
@@ -331,12 +337,17 @@ const styles = StyleSheet.create({
   },
   scanButton: {
     backgroundColor: '#34C759',
-    borderRadius: 25,
-    width: 50,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10,
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: -30,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+        elevation: 6,
   },
   scrollContent: {
     paddingBottom: 20,
