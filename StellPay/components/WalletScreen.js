@@ -47,6 +47,7 @@ const WalletScreen = () => {
 
       {/* Scrollable Main Content */}
       <ScrollView contentContainerStyle={styles.scrollContent}>
+
         {/* Balance Card */}
         <View style={styles.balanceCard}>
           <Text style={styles.balanceLabel}>Balance</Text>
@@ -56,7 +57,7 @@ const WalletScreen = () => {
             <Text style={styles.balanceChangeText}>+3.4% (+$2,134.42)</Text>
           </View>
           <View style={styles.actionButtons}>
-            <TouchableOpacity style={styles.actionButton}>
+            <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate('SendMoneyScreen')}>
               <Ionicons name="send-outline" size={20} color="white" />
               <Text style={styles.actionButtonText}>SEND</Text>
             </TouchableOpacity>

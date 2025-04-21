@@ -23,7 +23,7 @@ export default function ConfirmPaymentScreen() {
 
   const handleSend = () => {
     // Navigate to MoneySent screen
-    navigation.navigate('MoneySent');
+    navigation.navigate('MoneySentScreen');
   };
 
   return (

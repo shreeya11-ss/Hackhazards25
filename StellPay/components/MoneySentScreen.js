@@ -1,3 +1,5 @@
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+
 import { Ionicons } from '@expo/vector-icons';
 
 export default function MoneySentScreen({ navigation }) {
@@ -19,7 +21,7 @@ export default function MoneySentScreen({ navigation }) {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('WalletScreen')}
         >
           <Text style={styles.buttonText}>RETURN HOME</Text>
         </TouchableOpacity>

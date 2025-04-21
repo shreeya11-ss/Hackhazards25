@@ -14,10 +14,14 @@ export default function SendFundsScreen() {
   const [amount, setAmount] = useState('');
   const navigation = useNavigation();
   const route = useRoute();
-  const { fullName, mobile } = route.params || {};
+  // const { fullName, mobile } = route.params || {};
+  const { recipient } = route.params || {};
+const { name: fullName, number: mobile } = recipient || {};
+console.log('SendFundsScreen loaded with:', fullName, mobile);
+
 
   const handleProceed = () => {
-    navigation.navigate('ConfirmPayment', {
+    navigation.navigate('ConfirmPaymentScreen', {
       amount: parseFloat(amount),
       fullName,
       mobile,

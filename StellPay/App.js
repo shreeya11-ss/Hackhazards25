@@ -8,6 +8,10 @@ import RegisterScreen from './components/registerscreen';
 import OTPScreen from './components/otpscreen';
 import ForgotPasswordScreen from './components/ForgotPasswordScreen';
 import HistoryScreen from './components/HistoryScreen';
+import SendMoneyScreen from './components/SendMoneyScreen';
+import SendFundsScreen from './components/SendFundsScreen';
+import MoneySentScreen from './components/MoneySentScreen';
+import ConfirmPaymentScreen from './components/ConfirmPaymentScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -28,6 +32,11 @@ function App() {
         <Stack.Screen name="StellPayScreen" component={StellPayScreen} />
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
         <Stack.Screen name="HistoryScreen" component={HistoryScreen}/>
+        <Stack.Screen name="SendMoneyScreen" component={SendMoneyScreen}/>
+        <Stack.Screen name="SendFundsScreen" component={SendFundsScreen}/>
+        <Stack.Screen name="MoneySentScreen" component={MoneySentScreen}/>
+        <Stack.Screen name="ConfirmPaymentScreen" component={ConfirmPaymentScreen}/>
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

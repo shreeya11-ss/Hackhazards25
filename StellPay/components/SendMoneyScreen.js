@@ -35,6 +35,7 @@ export default function SendMoneyScreen() {
 
   const handleConfirm = () => {
     if (fullName && mobile) {
+      console.log('Navigating to SendFundsScreen with:', fullName, mobile);
       navigation.navigate('SendFundsScreen', {
         recipient: {
           name: fullName,

@@ -11,7 +11,7 @@ const LoginScreen = ({ navigation }) => {
     console.log('Phone:', phone);
     console.log('Password:', password);
     console.log('Save Info:', saveInfo);
-    navigation.navigate('Wallet');
+    navigation.navigate('WalletScreen');
   };
 
   return (
