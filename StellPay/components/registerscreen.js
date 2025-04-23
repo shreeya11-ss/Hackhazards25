@@ -1,20 +1,31 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, Image } from 'react-native';
-// import LinearGradient from 'react-native-linear-gradient';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, Image,Alert } from 'react-native';
+import {  account, databases, ID, Permission, Role ,registerUser} from './appwrite';
+import { useNavigation } from '@react-navigation/native';
+
 
 // Register Screen Component
-const RegisterScreen = ({ navigation }) => {
+const RegisterScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const navigation = useNavigation();
 
-  const handleSignUp = () => {
-    console.log('Name:', name);
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('Confirm Password', confirmPassword);
-    navigation.navigate('Wallet');
+  const handleSignUpPress = async () => {
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match!');
+      return;
+    }
+    try {
+      await registerUser({ name, email, password, phone });
+      Alert.alert('Success', 'Account created successfully!');
+      navigation.navigate('WalletScreen');
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', error.message || 'Registration failed');
+    }
   };
 
   return (
@@ -38,6 +49,14 @@ const RegisterScreen = ({ navigation }) => {
         />
         <TextInput
           style={styles.input}
+          placeholder="Phone"
+          placeholderTextColor="#ccc"
+          value={phone}
+          onChangeText={setPhone}
+          keyboardType="phone-pad"
+        />
+        <TextInput
+          style={styles.input}
           placeholder="Password"
           placeholderTextColor="#ccc"
           value={password}
@@ -53,7 +72,7 @@ const RegisterScreen = ({ navigation }) => {
           secureTextEntry
         />
 
-        <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
+        <TouchableOpacity style={styles.signUpButton} onPress={handleSignUpPress}>
           <Text style={styles.buttonText}>SIGN UP</Text>
         </TouchableOpacity>
       </View>

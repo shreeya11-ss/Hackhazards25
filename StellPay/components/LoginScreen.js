@@ -1,17 +1,28 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
-// import LinearGradient from 'react-native-linear-gradient';
+import React, { useState  } from 'react';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet,Alert } from 'react-native';
+import { account } from './appwrite';
+
 
 const LoginScreen = ({ navigation }) => {
-  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [saveInfo, setSaveInfo] = useState(false);
 
-  const handleLogin = () => {
-    console.log('Phone:', phone);
-    console.log('Password:', password);
-    console.log('Save Info:', saveInfo);
-    navigation.navigate('WalletScreen');
+  const handleLogin = async () => {
+
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter both email and password.');
+      return;
+    }
+
+    try {
+      await account.createEmailPasswordSession(email, password);
+      Alert.alert('Success', 'Logged in successfully!');
+      navigation.navigate('WalletScreen');
+    } catch (error) {
+      console.error('Login failed:', error);
+      Alert.alert('Error', error.message || 'Login failed. Please check your credentials.');
+    }
   };
 
   return (
@@ -22,15 +33,16 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.tagline}>a Fancy App</Text>
 
         <TextInput
-          style={[styles.input, { borderColor: '#4CAF50' }]} // Green border
-          placeholder="+1 566 344"
+          style={[styles.input, { borderColor: '#4CAF50' }]}
+          placeholder="Email"
           placeholderTextColor="#ccc"
-          value={phone}
-          onChangeText={setPhone}
-          keyboardType="phone-pad"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
         />
         <TextInput
-          style={[styles.input, { borderColor: '#4CAF50' }]} // Green border
+          style={[styles.input, { borderColor: '#4CAF50' }]}
           placeholder="Password"
           placeholderTextColor="#ccc"
           value={password}
