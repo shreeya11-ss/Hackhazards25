@@ -31,7 +31,7 @@ console.log("App is rendering");
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false,}} initialRouteName="Wallet">
+      <Stack.Navigator screenOptions={{ headerShown: false,}} initialRouteName="StellPayScreen">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Send" component={SendScreen} />
         <Stack.Screen name="Wallet" component={WalletScreen} />
