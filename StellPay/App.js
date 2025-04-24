@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginScreen from './components/LoginScreen'; // Import your components
-import StellPayScreen from './components/StellPayScreen';
+import LoginScreen from '../my-wallet/screens/LoginScreen'; // Import your components
+import StellPayScreen from '../my-wallet/screens/StellPayScreen';
 import WalletScreen from './components/WalletScreen';
-import RegisterScreen from './components/registerscreen';
+import RegisterScreen from '../my-wallet/screens/registerscreen';
 import OTPScreen from './components/otpscreen';
 import ForgotPasswordScreen from './components/ForgotPasswordScreen';
 import HistoryScreen from './components/HistoryScreen';

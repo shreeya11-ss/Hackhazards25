@@ -21,7 +21,7 @@ const RegisterScreen = () => {
     try {
       await registerUser({ name, email, password, phone });
       Alert.alert('Success', 'Account created successfully!');
-      navigation.navigate('WalletScreen');
+      navigation.navigate('Wallet');
     } catch (error) {
       console.error(error);
       Alert.alert('Error', error.message || 'Registration failed');

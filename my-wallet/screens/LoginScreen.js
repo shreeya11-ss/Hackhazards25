@@ -18,7 +18,7 @@ const LoginScreen = ({ navigation }) => {
     try {
       await account.createEmailPasswordSession(email, password);
       Alert.alert('Success', 'Logged in successfully!');
-      navigation.navigate('WalletScreen');
+      navigation.navigate('Wallet');
     } catch (error) {
       console.error('Login failed:', error);
       Alert.alert('Error', error.message || 'Login failed. Please check your credentials.');

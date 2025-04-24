@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { account,ID } from './appwrite'; // Adjust the path to your Appwrite client
+import { account,ID } from '../../my-wallet/screens/appwrite'; // Adjust the path to your Appwrite client
 //  IMPORTANT:  Set this to false for production!
 const USE_FIXED_OTP = true;  //  <---  DEVELOPMENT/TESTING ONLY!!!
 

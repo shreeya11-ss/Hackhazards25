@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@stellar/stellar-base": "^13.1.0",
+    "buffer": "^6.0.3"
+  }
+}

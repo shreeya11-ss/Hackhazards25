@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image, TextInput ,BackHandler,Alert} from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { account } from './appwrite';
+import { account } from '../../my-wallet/screens/appwrite';
 
 const WalletScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');

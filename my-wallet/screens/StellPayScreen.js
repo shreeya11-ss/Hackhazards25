@@ -1,8 +1,24 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-// import LinearGradient from 'react-native-linear-gradient'; // Removed
+
 
 const StellPayScreen = ({ navigation }) => {
+
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const session = await account.get();
+        if (session) {
+          navigation.navigate('Wallet'); // or whatever screen after login
+        }
+      } catch (err) {
+        console.log('No session found');
+      }
+    };
+    checkSession();
+  }, []);
+
+  
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -12,14 +28,14 @@ const StellPayScreen = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.loginButton}
-          onPress={() => navigation.navigate('Login')}
+          onPress={() => navigation.navigate('LoginScreen')}
         >
           <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.signUpButton}
-          onPress={() => navigation.navigate('Register')}
+          onPress={() => navigation.navigate('RegisterScreen')}
         >
           <Text style={styles.buttonText}>SIGN UP</Text>
         </TouchableOpacity>
