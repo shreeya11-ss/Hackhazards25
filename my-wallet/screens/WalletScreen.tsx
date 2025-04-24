@@ -19,6 +19,7 @@ import {
   Operation,
   Asset,
 } from "@stellar/stellar-base";
+import * as Clipboard from 'expo-clipboard';
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types";
@@ -27,7 +28,9 @@ import {
   clearScheduledTransactions,
 } from "../utils/ScheduledTx";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { account } from "./appwrite";
+import { account,client } from "./appwrite";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 export default function WalletScreen() {
   const [wallet, setWallet] = useState<{ publicKey: string; secretKey: string } | null>(null);
@@ -36,6 +39,84 @@ export default function WalletScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isBalanceVisible, setIsBalanceVisible] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  const [publicKey, setPublicKey] = useState('');
+const [secretKey, setSecretKey] = useState('');
+
+
+
+const [isKeysVisible, setIsKeysVisible] = useState(false);
+
+const toggleKeysVisibility = () => {
+  setIsKeysVisible(!isKeysVisible);
+};
+
+const handleCopy = (key: string, label: string) => {
+  Clipboard.setString(key);
+  Alert.alert('Copied', `${label} copied to clipboard`);
+};
+ 
+
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await account.get();
+        setUserName(user.name);
+      } catch (error) {
+        const err = error as Error;
+        console.error('Error fetching user:', err.message);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+
+  interface UserPreferences {
+    name: string;
+    email: string;
+    // Add other fields as per your user data structure
+  }
+
+  const [user, setUser] = useState<UserPreferences | null>(null);
+  
+
+   useEffect(() => {
+    // Function to fetch user data
+    const fetchUserData = async () => {
+      try {
+  
+        const userData = await account.get(); // Fetch user info from Appwrite
+        setUser(userData); // Set user data to state
+      } catch (error) {
+        const err = error as Error;
+        if (err.message.includes("missing scope")) {
+          // Handle the error silently (without logging it)
+          return;
+        }
+        console.error(error); // Show other errors
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  
+
+  // Load wallet from AsyncStorage
+  useEffect(() => {
+    const loadWallet = async () => {
+      const pub = await AsyncStorage.getItem('publicKey');
+      const sec = await AsyncStorage.getItem('secretKey');
+      if (pub && sec) {
+        setWallet({ publicKey: pub, secretKey: sec });
+      }
+    };
+    loadWallet();
+  }, []);
+
 
   const generateWallet = () => {
     const keypair = Keypair.random();
@@ -160,10 +241,10 @@ export default function WalletScreen() {
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <Image
-            source={{ uri: 'https://via.placeholder.com/50/0000FF/808080?Text=User' }}
+            source={{ uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAMFBMVEXk5ueutLfb3t+nrrHn6eqrsbTh4+S7wMPT1tixt7rKztDBxsi3vL/q7O3Y293Q09Wdj+FKAAAFPklEQVR4nO2c25LbIAxADRZgrv7/vy042SabOyBH8g7npdP2xWckQBDQNA0Gg8FgMBgMBoPBYDAYDAaDwWAwGAwGg92BzKRlQevtL0cFQMvFOe/NhnduSfqQPtlk8SZYdY0Nxi86HswH4uKDFUrcUoR8OlJ4skoQD0zOPsKG5TDRick+E/kvZNMhdECb+Y1KsZmNZm8DsKp3YfkZPSv1x74BtP8gLGeYBwdS+NxlGzl8bT5OsUuqLRNXHVensuk4pmtOg0uGpQ24FpViQ/3l98Da6CLEyi00sNhmGcFsTgMZmgbMhrLM1hvf7lJWT+rP/8Vas1Y+sGE0CYDsictmwyfRwPTKqBCpJc7A0pdkW2i4zM+xW6VAbXEiuv7AlCKNRaIBgkrGUnsU4to7+s9wCA101DHXqEBtUqYyHBfBoeAEj+WiPLmM7qgwb2SCJHaBFWnIZCx1nkFXufwb5WldJt1dll3JGNo8gxTQXHKe0W45O3b+D1C0gwbajpeeyRDv0RDHf5kBNKWLRBz/ZQYg3XAmg+giRJCEMriTmaA9QYOEt/7Ty+CVzBtqIZXBHP9Fhs6l/LqEKjP/JRnayCCnGW1k/tSYwZ7NxjqDJoN2ArBhKcuZXGhiutDWZpP+S1sAzPOMsjmjlcHdaRJvm3t+Mb+Hss7M9PxkfkdIpC6ohwDE47/8bIbmUm440cpg1gCB/NoJoC2byhBnGWqe0f8OCBIrz2gLsxMRK88MvQvCxZkzxCvmiYhzEBg4uOTSGeWGBvm8fCJilDRsrjVNCLeaeMRlwtgIzPRrzIXOn2mUZROYTOqMDPV1ht90JRrxDvOOnpMN8ssMt0D77QYG1fIdrRto+vs/j2jbpjF93dRUcSrBoPB/CDTY8Llqfkt1lcakVH5M9E9fAd+jBP1FxpfA+nFwVGC2Vt4D8rPg5LBwHfpXwLSYt881lfJ8X2j+AvRi5lc6SpmF7yx2C+jk1ROf/O8+8StgXqNXc++j5jnQ/qLUCkzJ2zlT2meUP2d7lJHyEIhxksvqnFsXOcVDdGd4CfyH+ksa2b5cn5HnJjonzv95DPKn5u9PKSeX9yYEW6bibeGxIRjv3ZpSVpu4GxUPmYpEKPOWul87T1OBsiY7LUlyNdpE1hwL+2yB+S2VlXKcXJL8ki5CFjFBPAjGS6WT0MRolotRuq0rU4XHlVAeS3n5YXGiCVG70pWp69xMWOvpWwRBRLtzrqwj7a8VJyc+GO0f68yGbIuTt2GIJmedQNPzSL7es7Qyi0V/txgt9fAuKptOWL94xllUKg5h6lFh/dZGFKR724yt10aY9RuFAUwO98bsMx0vd19Howy7ZtiVjnX7LjsQ/d4ZdmUjwp7BAY38Kuutzn5nnrB8KcMuzH6fNQfAdVWTbahdLqFXtS7EtBH4z1BAftIdcxebeUVONXjftHRHHdxOezF9fehfgzoNxJUwLgWFZxNX0rig2sBCHBdEG9KxfwHlbn1X60JMEK4+fdZ9+SsgvOJGaV6Gguq9ko79RLYL1dehEiT5pHzN3DUJ9LdhxKXnJjdOtz9Eum7Z8oqL6GmDGJkl2UbjJQJIDF2UaQsN0lMSbJrmgIjaIAsN1fQAitu0/INtqGqQXy3j0dLUEfdxPCKq/m0qm8r/nvqdDW5/PFTq3w7g9pPApfbCfc4y6k9+Tm3rQFb7mFuq+wag9sbApvIwHbdxITZz1aBhPWRKq/qawLAsmC/UDRqMTv97UrfScNsv32BrZDgvmQVVJWNm3lR125HMqVs1gTdVLoPBYDAYDAZH4R8eaVEbhZaf7QAAAABJRU5ErkJggg==' }}
             style={styles.profileImage}
           />
-          <Text style={styles.greeting}>Hi, Jasker</Text>
+          <Text style={styles.greeting}>Welcome </Text>
         </View>
         <View style={styles.headerRight}>
           <TouchableOpacity>
@@ -214,7 +295,7 @@ export default function WalletScreen() {
               <Ionicons name="send-outline" size={18} color="white" />
               <Text style={styles.actionButtonText}>SEND</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton}>
+            <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate('Receive', { publicKey: wallet?.publicKey || '' })}>
               <Ionicons name="arrow-down-outline" size={18} color="white" />
               <Text style={styles.actionButtonText}>RECEIVE</Text>
             </TouchableOpacity>
@@ -231,6 +312,54 @@ export default function WalletScreen() {
             </TouchableOpacity>
           </View>
         </View>
+
+        <View style={styles.container}>
+      <Text style={styles.heading}>Wallet Keys</Text>
+      
+      {/* Button to toggle key visibility */}
+      <TouchableOpacity
+        style={styles.toggleButton}
+        onPress={toggleKeysVisibility}
+      >
+        <Text style={styles.toggleButtonText}>
+          {isKeysVisible ? 'Hide Keys' : 'Show Keys'}
+        </Text>
+      </TouchableOpacity>
+      
+      {/* Public Key Section */}
+      {isKeysVisible && (
+        <View style={styles.keyContainer}>
+          <Text style={styles.keyLabel}>Public Key:</Text>
+          <Text selectable style={styles.keyText}>
+            {wallet.publicKey}
+          </Text>
+          <TouchableOpacity
+            style={styles.copyButton}
+            onPress={() => handleCopy(wallet.publicKey, 'Public key')}
+          >
+            <Text style={styles.copyButtonText}>Copy Public Key</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* Secret Key Section */}
+      {isKeysVisible && (
+        <View style={styles.keyContainer}>
+          <Text style={styles.keyLabel}>Secret Key:</Text>
+          <Text selectable style={styles.keyText}>
+            {wallet.secretKey}
+          </Text>
+          <TouchableOpacity
+            style={styles.copyButton}
+            onPress={() => handleCopy(wallet.secretKey, 'Secret key')}
+          >
+            <Text style={styles.copyButtonText}>Copy Secret Key</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </View>
+        
+        
       </ScrollView>
       {/* Bottom Navigation */}
             <View style={styles.bottomNav}>
@@ -452,6 +581,59 @@ export default function WalletScreen() {
       shadowOpacity: 0.3,
       shadowRadius: 10,
       elevation: 6,
+    },
+    toggleButton: {
+      backgroundColor: '#34C759',
+      padding: 10,
+      borderRadius: 5,
+      marginBottom: 20,
+      alignItems: 'center',
+      width:120,
+      marginLeft:132,
+    },
+    toggleButtonText: {
+      color: '#fff',
+      fontSize: 16,
+      
+    },
+    keyContainer: {
+      marginBottom: 20,
+      backgroundColor: '#fff',
+      padding: 15,
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 5,
+      elevation: 2,
+    },
+    keyLabel: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginBottom: 5,
+    },
+    keyText: {
+      fontSize: 14,
+      color: '#333',
+      marginBottom: 10,
+    },
+    heading: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 20,
+      textAlign: 'center',
+      color:'#fff'
+    },
+    copyButton: {
+      backgroundColor: '#28A745',
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      borderRadius: 5,
+      alignItems: 'center',
+    },
+    copyButtonText: {
+      color: '#fff',
+      fontSize: 14,
     },
     
   });

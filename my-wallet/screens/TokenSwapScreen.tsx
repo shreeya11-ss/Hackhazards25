@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { LineChart, Grid } from 'react-native-svg-charts';
 
 const assets = {
   XLM: { code: 'XLM', issuer: null },
@@ -10,7 +9,7 @@ const assets = {
 
 export default function TokenConvertScreen() {
   const [selectedToken, setSelectedToken] = useState<'XLM' | 'MOBI'>('XLM');
-  const [amount, setAmount] = useState(''); 
+  const [amount, setAmount] = useState('');
   const [usdValue, setUsdValue] = useState<string | null>(null);
 
   useEffect(() => {
@@ -21,8 +20,6 @@ export default function TokenConvertScreen() {
       setUsdValue(null);
     }
   }, [amount, selectedToken]);
-
-  const mockGraphData = [0.1, 0.3, 0.2, 0.5, 0.6, 0.8, 0.7]; // example static data
 
   return (
     <View style={styles.container}>
@@ -58,18 +55,6 @@ export default function TokenConvertScreen() {
         <Text style={styles.rateNote}>
           10 Token ≈ {usdValue && amount ? (parseFloat(usdValue) / parseFloat(amount)).toFixed(2) : '1.0'} US Dollars
         </Text>
-
-        {/* Static Graph with flex width and same background */}
-        <View style={{ height: 180, marginTop: 45, width: '100%' }}>
-          <LineChart
-            style={{ flex: 1 }}
-            data={mockGraphData}
-            svg={{ stroke: '#2e8b57', strokeWidth: 2 }}
-            contentInset={{ top: 10, bottom: 10 }}
-          >
-            <Grid />
-          </LineChart>
-        </View>
       </View>
 
       <TouchableOpacity style={styles.exchangeButton}>
