@@ -35,7 +35,8 @@
     "react-native-screens": "~4.4.0",
     "react-native-vector-icons": "^10.2.0",
     "stellar-sdk": "^13.2.0",
-    "react-native-svg": "15.8.0"
+    "react-native-svg": "15.8.0",
+    "expo-updates": "~0.27.4"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
