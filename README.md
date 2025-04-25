@@ -9,9 +9,6 @@
 
 ## 📌 Problem Statement
 
-Select the problem statement number and title from the official list given in Participant Manual.
-
-**Example:**  
 **Problem Statement 6 – Better Finance for Everyone with Stellar**
 
 ---
@@ -42,7 +39,7 @@ It’s the go-to solution for secure, fast, and accessible digital transactions 
 - Shreeya Sharma (Github Profile- shreeya11-ss)  
 - Ritu Singh  (Github Profile- ritu114)
 - Khushi Pandey (Github Profile- dhaaryparvi)
-*(Add links if you want)*
+
 
 ### Your Approach:  
 - Why you chose this problem - We Chose this problem because we found it innovative and it was best suited with our teams tech-stack.
@@ -80,7 +77,7 @@ Highlight the most important features of your project:
 - ✅ Feature 3  Token Swaps using Stellar SDKs
 - ✅ Feature 4  Multi-token support
 
-Add images, GIFs, or screenshots if helpful!
+
 
 ---
 
@@ -126,8 +123,6 @@ Install the Expo Go app from PlayStore
 Scan the QR-code with the Expo Go app 
 And you are ready to go.
 ```
-
-Provide any backend/frontend split or environment setup notes here.
 
 ---
 
