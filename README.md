@@ -107,7 +107,7 @@ Highlight the most important features of your project:
 ### Local Setup:
 ```bash
 # Clone the repo
-git clone https://github.com/your-team/project-name
+git clone https://github.com/shreeya11-ss/Hackhazards25
 
 # Install dependencies
 cd my-wallet
